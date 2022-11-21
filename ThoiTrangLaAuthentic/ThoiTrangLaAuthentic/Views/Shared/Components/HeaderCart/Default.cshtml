@@ -1,0 +1,55 @@
+﻿@model List<ThoiTrangLaAuthentic.ModelViews.CartItem>
+
+@if (Model != null && Model.Count() > 0)
+{
+    <div class="harmic-offcanvas-body">
+        <div class="minicart-content">
+            <div class="minicart-heading">
+                <h4 class="mb-0">Giỏ hàng của bạn</h4>
+                <a href="#" class="button-close"><i class="pe-7s-close"></i></a>
+            </div>
+            <ul class="minicart-list">
+                @foreach (var item in Model)
+                {
+                    string url = $"/{item.products.Alias}-{item.products.ProductId}.html";
+                    <li class="minicart-products">
+                        <a href="@url" class="products-item_img">
+                            <img class="img-full" src="~/images/products/@item.products.Thumb" style="height: 124px; width:112px;" alt="@item.products.ProductName">
+                        </a>
+                        <div class="products-item_content">
+                            <a class="products-item_title" href="@url">@item.products.ProductName</a>
+                            <span class="products-item_quantity">
+                                @item.amount x @item.products.Price.Value.ToString("#,##0") VNĐ
+                            </span>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="minicart-item_total">
+            <span>Tổng tiền</span>
+            <span class="amount">@Model.Sum(x => x.TotalMoney).ToString("#,##0") VNĐ</span>
+        </div>
+        <div class="group-btn_wrap d-grid gap-2">
+            <a href="cart.html" class="btn btn-secondary btn-primary-hover">Xem giỏ hàng</a>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <a href="/checkout.html" class="btn btn-secondary btn-primary-hover">Thanh toán</a>
+            }
+            else
+            {
+                <a href="/dang-nhap.html?returnUrl=/checkout.html" class="btn btn-secondary btn-primary-hover">Thanh toán</a>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="harmic-offcanvas-body">
+        <div class="minicart-content">
+            <div class="minicart-heading">
+                <h4 class="mb-0">Hiện chưa có đơn hàng nào trong giỏ!!!</h4>
+            </div>
+        </div>
+    </div>
+}
